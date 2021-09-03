@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using HarmonyLib;
 using MelonLoader;
+using Newtonsoft.Json;
 
 using Assets.Main.Scenes;
 using Assets.Scripts.Unity.UI_New.InGame;
@@ -19,6 +20,12 @@ using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Simulation;
 using Assets.Scripts.Models.Towers.Mods;
+using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
+using Assets.Scripts.Unity.Player;
+using System.Reflection;
+using Assets.Scripts.Models.Towers.Behaviors;
+using Assets.Scripts.Unity.Bridge;
+using Assets.Scripts.Simulation.Towers.Behaviors;
 
 [assembly: MelonInfo(typeof(Sniper_Paragon.Main), "Sniper Paragon", "0.0.1", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -58,6 +65,16 @@ namespace Sniper_Paragon
                 __instance.unlockedTowers.Add("SniperMonkey-Paragon");
 
                 __instance.acquiredUpgrades.Add("SniperMonkey Paragon");
+            }
+        }
+
+        [HarmonyPatch(typeof(Btd6Player), nameof(Btd6Player.CheckShowParagonPip))]
+        class Btd6Player_CheckShowParagonPip
+        {
+            [HarmonyPrefix]
+            internal static bool Prefix(string towerId)
+            {
+                return towerId != "SniperMonkey";
             }
         }
 
