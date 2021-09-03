@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MelonLoader;
 using HarmonyLib;
 using UnhollowerBaseLib;
+using BTD_Mod_Helper.Extensions;
 
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Mods;
@@ -258,39 +259,40 @@ namespace Bomb_Paragon
             towerModel.GetAttackModel().GetBehavior<AttackFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.GetBehavior<ProjectileFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
-            //towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().Speed = 320f;
+            towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().Speed = 320f;
 
             var mainProjectile = towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[0].projectile;
-            //mainProjectile.pierce = 80f;
-            //mainProjectile.radius = 40f;
-            //mainProjectile.GetBehavior<DamageModel>().damage = 20f;
-            //mainProjectile.GetBehavior<AgeModel>().lifespan = 0.15f;
-            //mainProjectile.GetBehaviors<DamageModifierForTagModel>()[0].damageMultiplier = 1.5f;
-            //mainProjectile.GetBehaviors<DamageModifierForTagModel>()[1].damageAddative = 10f;
-            //mainProjectile.GetBehavior<SlowModel>().Lifespan = 3f;
+            mainProjectile.AddBehavior(new DamageModifierForTagModel(name: "BossTag", tag: "Boss", damageMultiplier: 2, damageAddative: 0f, mustIncludeAllTags: false, applyOverMaxDamage: false));
+            mainProjectile.pierce = 80f;
+            mainProjectile.radius = 40f;
+            mainProjectile.GetBehavior<DamageModel>().damage = 20f;
+            mainProjectile.GetBehavior<AgeModel>().lifespan = 0.15f;
+            mainProjectile.GetBehaviors<DamageModifierForTagModel>()[0].damageMultiplier = 1.5f;
+            mainProjectile.GetBehaviors<DamageModifierForTagModel>()[1].damageAddative = 10f;
+            mainProjectile.GetBehavior<SlowModel>().Lifespan = 3f;
 
             towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[0].projectile = mainProjectile.Duplicate();
             towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].emission = towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].emission.Duplicate();
             towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehavior<CreateProjectileOnExhaustFractionModel>().projectile = mainProjectile.Duplicate();
 
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().isOneShot = false;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().Lifespan = 1f;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.2f;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission = Game.instance.model.GetTower("Adora").GetWeapon().emission;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().count = 5;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().angleBetween = 110f;
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.RemoveBehavior<TravelStraitModel>();
-            //var adoraModel = new AdoraTrackTargetModel(
-            //    name: "AbilityTrackModel",
-            //    rotation: 15f,
-            //    minimumSpeed: 300f,
-            //    maximumSpeed: 500f,
-            //    acceleration: 90f,
-            //    lifespan: 1.5f,
-            //    accelerateInAngle: 50f,
-            //    startDeceleratingIfAngleGreaterThan: 70f
-            //);
-            //towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.AddBehavior(adoraModel);
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().isOneShot = false;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().Lifespan = 1f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.2f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission = Game.instance.model.GetTower("Adora").GetWeapon().emission;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().count = 5;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().angleBetween = 110f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.RemoveBehavior<TravelStraitModel>();
+            var adoraModel = new AdoraTrackTargetModel(
+                name: "AbilityTrackModel",
+                rotation: 15f,
+                minimumSpeed: 300f,
+                maximumSpeed: 500f,
+                acceleration: 90f,
+                lifespan: 1.5f,
+                accelerateInAngle: 50f,
+                startDeceleratingIfAngleGreaterThan: 70f
+            );
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.AddBehavior(adoraModel);
 
             //towerModel.GetAbilites()[1].activateOnPreLeak = true;
             //towerModel.GetAbilites()[1].activateOnLivesLost = false;
