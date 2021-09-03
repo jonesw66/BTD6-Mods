@@ -291,6 +291,8 @@ namespace Sniper_Paragon
 
             towerModel.GetWeapon().projectile.GetBehavior<DamageModel>().damage = 100f;
             towerModel.GetWeapon().projectile.GetBehavior<RetargetOnContactModel>().distance = 999f;
+
+            towerModel.GetWeapon().projectile.AddBehavior(new DamageModifierForTagModel(name: "BossTag", tag: "Boss", damageMultiplier: 0, damageAddative: 80f, mustIncludeAllTags: false, applyOverMaxDamage: false));
         }
     }
 }
