@@ -281,93 +281,54 @@ namespace Glue_Paragon
                 ignorePierceExhaustion: false,
                 saveId: null
             );
-
-            var baseProjectile = towerModel.GetWeapon().projectile.Duplicate();
-
-            var createSplatModel = new CreateProjectileOnContactModel(
-                name: "SingleEmissionModel_",
-                projectile: baseProjectile,
-                emission: new SingleEmissionModel(name: "SingleEmissionModel", null),
-                passOnCollidedWith: true,
-                dontCreateAtBloon: false,
-                passOnDirectionToContact: false
-            );
-            createSplatModel.projectile.id = "Splat";
-            createSplatModel.projectile.display = null;
-            createSplatModel.projectile.ignoreBlockers = true;
-            createSplatModel.projectile.radius = 12f;
-            createSplatModel.projectile.RemoveBehavior<TravelStraitModel>();
-            createSplatModel.projectile.AddBehavior(model500.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<AgeModel>());
-            towerModel.GetWeapon().projectile.AddBehavior(createSplatModel);
-
-            var lingerBehaviorModel = model005.GetWeapon().projectile.GetBehavior<AddBehaviorToBloonModel>();
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.filters = baseProjectile.filters;
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[0] = baseProjectile.GetBehavior<SlowModel>();
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[2] = baseProjectile.GetBehavior<ProjectileFilterModel>();
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[5] = baseProjectile.GetBehaviors<SlowForBloonModel>()[0];
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[6] = baseProjectile.GetBehaviors<SlowForBloonModel>()[1];
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[7] = baseProjectile.GetBehaviors<SlowForBloonModel>()[2];
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[8] = baseProjectile.GetBehaviors<SlowForBloonModel>()[3];
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[10] = baseProjectile.GetBehavior<RemoveMutatorsFromBloonModel>();
-
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.AddBehavior(baseProjectile.GetBehavior<AddBehaviorToBloonModel>());
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.AddBehavior(baseProjectile.GetBehavior<DamageModifierForTagModel>());
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.AddBehavior(baseProjectile.GetBehaviors<AddBehaviorToBloonModel>()[1]);
-
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.RemoveBehavior<AddBehaviorToBloonModel>(); // Corrosive DOT
-
-            var projectileNoLinger = lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.Duplicate();
-            projectileNoLinger.RemoveBehavior<AddBehaviorToBloonModel>();
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnDestroyModel>().projectile = projectileNoLinger;
-
-            lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.behaviors[4 - 1] = lingerBehaviorModel.GetBehavior<EmitOnDestroyModel>().projectile.GetBehavior<AddBehaviorToBloonModel>().Duplicate();
-
-            towerModel.GetWeapon().projectile.AddBehavior(lingerBehaviorModel);
         }
 
         static void CustomizeTower()
         {
-            var model050 = Game.instance.model.GetTowerFromId($"{baseTower}-050");
+            var model050 = Game.instance.model.GetTowerFromId($"{baseTower}-050").Duplicate();
 
-            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon");
+            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon").Duplicate();
 
-            towerModel.display = boomerangParagon.display;
-            towerModel.GetBehavior<DisplayModel>().display = boomerangParagon.display;
+            towerModel.display = model050.display;
+            towerModel.GetBehavior<DisplayModel>().display = model050.display;
 
             towerModel.AddBehavior(boomerangParagon.GetBehavior<ParagonTowerModel>());
-            towerModel.AddBehavior(boomerangParagon.GetBehaviors<ParagonAssetSwapModel>()[0]);
-            towerModel.AddBehavior(boomerangParagon.GetBehaviors<ParagonAssetSwapModel>()[1]);
+            towerModel.GetBehavior<ParagonTowerModel>().displayDegreePaths.ForEach(path => path.assetPath = model050.display);
             towerModel.AddBehavior(boomerangParagon.GetBehavior<CreateSoundOnAttachedModel>());
 
-            towerModel.GetWeapon().projectile.GetBehavior<SlowModel>().Multiplier = 0.15f;
+            towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().count = 6;
+            towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().angle = 60;
+            towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().sliceSize = 10;
+
+            towerModel.GetWeapon().projectile.GetBehavior<SlowModel>().Multiplier = 0.1f;
             towerModel.GetWeapon().projectile.GetBehavior<SlowModifierForTagModel>().slowMultiplier = 3.5f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[0].layers = 999;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[1].layers = 999;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[2].Multiplier = 0f;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[2].Lifespan = 4f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[2].layers = 999;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[3].Multiplier = 0.02f;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[3].Lifespan = 2.5f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[3].layers = 999;
 
             towerModel.GetWeapon().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<DamageOverTimeCustomModel>().damage = 4;
-            towerModel.GetWeapon().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<DamageOverTimeCustomModel>().Interval = 0.2f;
+            towerModel.GetWeapon().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<DamageOverTimeCustomModel>().Interval = 0.4f;
             towerModel.GetWeapon().projectile.GetBehavior<DamageModifierForTagModel>().damageAddative = 2f;
             towerModel.GetWeapon().projectile.GetBehaviors<AddBehaviorToBloonModel>()[1].GetBehavior<DamageOverTimeModel>().damage = 100;
             towerModel.GetWeapon().projectile.GetBehaviors<AddBehaviorToBloonModel>()[1].lifespan = 3.5f;
 
-            towerModel.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.pierce = 50;
-            towerModel.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.radius = 25;
-
             var baseProjectile = towerModel.GetWeapon().projectile.Duplicate();
-            baseProjectile.RemoveBehavior<CreateProjectileOnContactModel>();
-            baseProjectile.GetBehaviors<AddBehaviorToBloonModel>()[2].RemoveBehavior<EmitOnDestroyModel>();
-            towerModel.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>().projectile = baseProjectile;
 
-            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 1.0f;
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 1f;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile = baseProjectile;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.display = null;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.pierce = 9999999f;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.radius = 999f;
-            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.filters = new Il2CppReferenceArray<FilterModel>(0);
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.AddBehavior(model050.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<AgeModel>());
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.AddBehavior(model050.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<AddBonusDamagePerHitToBloonModel>());
+
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<AddBonusDamagePerHitToBloonModel>().perHitDamageAddition = 2;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.RemoveBehavior<ProjectileFilterModel>();
         }
     }
