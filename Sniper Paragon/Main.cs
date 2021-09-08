@@ -27,7 +27,7 @@ using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Unity.Bridge;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 
-[assembly: MelonInfo(typeof(Sniper_Paragon.Main), "Sniper Paragon", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Sniper_Paragon.Main), "Sniper Paragon", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Sniper_Paragon
 {

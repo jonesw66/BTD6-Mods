@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: MelonInfo(typeof(Tack_Paragon.Main), "Tack Paragon", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Tack_Paragon.Main), "Tack Paragon", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace Tack_Paragon

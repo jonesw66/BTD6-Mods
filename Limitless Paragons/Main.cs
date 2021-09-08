@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Assets.Scripts.Models;
 using Assets.Scripts.Models.Effects;
 using Assets.Scripts.Models.Towers.Behaviors;
+using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Simulation;
 using Assets.Scripts.Simulation.Bloons;
 using Assets.Scripts.Simulation.Objects;
@@ -22,7 +23,7 @@ using MelonLoader;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.Behaviors.ParagonTowerModel;
 
-[assembly: MelonInfo(typeof(Limitless_Paragons.Main), "Limitless Paragons", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Limitless_Paragons.Main), "Limitless Paragons", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Limitless_Paragons
 {
@@ -50,7 +51,7 @@ namespace Limitless_Paragons
         {
             for (int degree = minDegree; degree <= maxDegree; degree++)
             {
-                float requiredPops = degree > 200 ? 6575000f * degree - 864615000 : 12500f * degree * degree;
+                float requiredPops = 12500f * degree * degree;
                 popsPerDegree.Add(degree, requiredPops);
             }
         }
@@ -61,8 +62,6 @@ namespace Limitless_Paragons
 
             while (popsPerDegree[nextDegree] < pops)
             {
-                MelonLogger.Msg("PopsPerDegree: " + popsPerDegree[nextDegree]);
-                MelonLogger.Msg("Next Degree: " + nextDegree);
                 nextDegree++;
 
                 if (nextDegree > popsPerDegree.Count)
@@ -101,6 +100,15 @@ namespace Limitless_Paragons
             tower.GetTowerBehavior<ParagonTower>().UpdateDegree();
         }
 
+        [HarmonyPatch(typeof(GameModel), nameof(GameModel.CreateModded), new Type[] { typeof(GameModel), typeof(Il2CppSystem.Collections.Generic.List<ModModel>) })]
+        class GameModel_CreateModded
+        {
+            [HarmonyPostfix]
+            internal static void Postfix(GameModel result)
+            {
+                paragons.Clear();
+            }
+        }
 
         [HarmonyPatch(typeof(InGame), nameof(InGame.Update))]
         class InGame_Update
@@ -156,16 +164,6 @@ namespace Limitless_Paragons
                     }
                 }
             }
-        }
-
-        public override void OnNewGameModel(GameModel result)
-        {
-            base.OnNewGameModel(result);
-
-            result.paragonDegreeDataModel.attackCooldownReductionX = 70f;
-            result.paragonDegreeDataModel.damagePercentPerDegree = 5.0f;
-            result.paragonDegreeDataModel.damageIncreasePerDegree = 2.0f;
-            result.paragonDegreeDataModel.damageIncreaseForDegrees = 30;
         }
     }
 }

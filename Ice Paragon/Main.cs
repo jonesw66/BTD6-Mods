@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: MelonInfo(typeof(Ice_Paragon.Main), "Ice Paragon", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Ice_Paragon.Main), "Ice Paragon", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace Ice_Paragon

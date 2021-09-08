@@ -25,7 +25,7 @@ using Assets.Scripts.Simulation;
 using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Unity.Player;
 
-[assembly: MelonInfo(typeof(Glue_Paragon.Main), "Glue Paragon", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Glue_Paragon.Main), "Glue Paragon", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Glue_Paragon
 {

@@ -25,7 +25,7 @@ using UnhollowerBaseLib;
 using System.Reflection;
 using Assets.Scripts.Unity.Player;
 
-[assembly: MelonInfo(typeof(Bomb_Paragon.Main), "Bomb Paragon", "0.0.1", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Bomb_Paragon.Main), "Bomb Paragon", "0.1.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Bomb_Paragon
 {
