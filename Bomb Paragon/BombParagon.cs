@@ -261,15 +261,13 @@ namespace Bomb_Paragon
             towerModel.GetWeapon().projectile.GetBehavior<ProjectileFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().Speed = 320f;
 
-            var mainProjectile = towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[0].projectile;
-            mainProjectile.AddBehavior(new DamageModifierForTagModel(name: "BossTag", tag: "Boss", damageMultiplier: 2, damageAddative: 0f, mustIncludeAllTags: false, applyOverMaxDamage: false));
-            mainProjectile.pierce = 80f;
-            mainProjectile.radius = 40f;
-            mainProjectile.GetBehavior<DamageModel>().damage = 20f;
-            mainProjectile.GetBehavior<AgeModel>().lifespan = 0.15f;
-            mainProjectile.GetBehaviors<DamageModifierForTagModel>()[0].damageMultiplier = 1.5f;
-            mainProjectile.GetBehaviors<DamageModifierForTagModel>()[1].damageAddative = 10f;
-            mainProjectile.GetBehavior<SlowModel>().Lifespan = 3f;
+            var mainProjectile = towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[0].projectile.Duplicate();
+            //mainProjectile.AddBehavior(new DamageModifierForTagModel(name: "BossTag", tag: "Boss", damageMultiplier: 2, damageAddative: 0f, mustIncludeAllTags: false, applyOverMaxDamage: false));
+            //mainProjectile.pierce = 80f;
+            mainProjectile.radius = 20f;
+            //mainProjectile.GetBehavior<DamageModel>().damage = 15f;
+            //mainProjectile.GetBehavior<AgeModel>().lifespan = 0.15f;
+            //mainProjectile.GetBehavior<SlowModel>().Lifespan = 3f;
 
             towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[0].projectile = mainProjectile.Duplicate();
             towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].emission = towerModel.GetWeapon().projectile.GetBehaviors<CreateProjectileOnExhaustFractionModel>()[1].emission.Duplicate();
@@ -277,10 +275,13 @@ namespace Bomb_Paragon
 
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().isOneShot = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().Lifespan = 1f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].GetBehavior<AttackFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.2f;
-            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission = Game.instance.model.GetTower("Adora").GetWeapon().emission;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission = Game.instance.model.GetTower("Adora").GetWeapon().emission.Duplicate();
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().count = 5;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().angleBetween = 110f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.filters[0].Cast<FilterInvisibleModel>().isActive = false;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.RemoveBehavior<TravelStraitModel>();
             var adoraModel = new AdoraTrackTargetModel(
                 name: "AbilityTrackModel",
@@ -293,20 +294,6 @@ namespace Bomb_Paragon
                 startDeceleratingIfAngleGreaterThan: 70f
             );
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.AddBehavior(adoraModel);
-
-            //towerModel.GetAbilites()[1].activateOnPreLeak = true;
-            //towerModel.GetAbilites()[1].activateOnLivesLost = false;
-            //towerModel.GetAbilites()[1].cooldown = 1f;
-            //towerModel.GetAbilites()[1].GetBehavior<ActivateAttackModel>().processOnActivate = true;
-            //towerModel.GetAbilites()[1].GetBehavior<ActivateAttackModel>().attacks[0].weapons[1].projectile.GetBehavior<DamageModel>().damage = 3000f;
-            //var immunityAbilityModel = Game.instance.model.GetTowerFromId("SuperMonkey-005").GetAbility().Duplicate();
-            //immunityAbilityModel.GetBehavior<ImmunityModel>().lifespan = 0.2f;
-            //immunityAbilityModel.GetBehavior<ImmunityModel>().effectModel = null;
-            //immunityAbilityModel.RemoveBehavior<CreateEffectOnAbilityModel>();
-            //towerModel.AddBehavior(immunityAbilityModel);
-            //var turboAbility = Game.instance.model.GetTowerFromId("BoomerangMonkey-040").GetAbility().Duplicate();
-            //turboAbility.GetBehavior<TurboModel>().projectileDisplay = null;
-            //towerModel.AddBehavior(turboAbility);
         }
 
         static void AddCrosspathBehaviorsToProjectile(ref ProjectileModel projectile)

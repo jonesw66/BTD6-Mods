@@ -227,7 +227,8 @@ namespace Glue_Paragon
             pBehaviors = pBehaviors.AddTo(solverBehaviorModel);
 
             pBehaviors = pBehaviors.AddTo(model500.GetWeapon().projectile.GetBehavior<DamageModifierForTagModel>());
-            pBehaviors = pBehaviors.AddTo(model005.GetWeapon().projectile.GetBehavior<SlowModifierForTagModel>());
+            pBehaviors = pBehaviors.AddTo(model005.GetWeapon().projectile.GetBehaviors<SlowModifierForTagModel>()[0]);
+            pBehaviors = pBehaviors.AddTo(model005.GetWeapon().projectile.GetBehaviors<SlowModifierForTagModel>()[1]);
 
             var superGlueMoabsModel = model005.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[0];
             superGlueMoabsModel.mutationId = "ParagonSuper";
@@ -301,7 +302,10 @@ namespace Glue_Paragon
             towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().sliceSize = 10;
 
             towerModel.GetWeapon().projectile.GetBehavior<SlowModel>().Multiplier = 0.1f;
-            towerModel.GetWeapon().projectile.GetBehavior<SlowModifierForTagModel>().slowMultiplier = 3.5f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowModifierForTagModel>()[0].slowMultiplier = 2f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowModifierForTagModel>()[1].slowMultiplier = 3.2f;
+            towerModel.GetWeapon().projectile.GetBehaviors<SlowModifierForTagModel>()[1].resetToUnmodified = false;
+
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[0].layers = 999;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[1].layers = 999;
             towerModel.GetWeapon().projectile.GetBehaviors<SlowForBloonModel>()[2].Multiplier = 0f;

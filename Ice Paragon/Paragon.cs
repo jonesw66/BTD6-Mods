@@ -222,10 +222,25 @@ namespace Ice_Paragon
             towerModel.AddBehavior(boomerangParagon.GetBehavior<CreateSoundOnAttachedModel>());
 
             towerModel.GetBehavior<SlowBloonsZoneModel>().zoneRadius = 68f;
+            towerModel.GetBehavior<SlowBloonsZoneModel>().radiusOffset = 0;
             towerModel.GetBehavior<SlowBloonsZoneModel>().speedScale = 0.4f;
             towerModel.GetBehavior<SlowBloonsZoneModel>().bindRadiusToTowerRange = false;
             towerModel.GetBehavior<SlowBloonsZoneModel>().filters = new Il2CppReferenceArray<FilterModel>(0);
 
+            var slowZone = new SlowBloonsZoneModel(
+                name: "Slow",
+                zoneRadius: 80f,
+                mutationId: "WindSlow",
+                isUnique: true,
+                filters: null,
+                speedScale: 0.8f,
+                speedChange: 0,
+                bindRadiusToTowerRange: false,
+                radiusOffset: 0,
+                bloonTag: "Moabs",
+                inclusive: true
+            );
+            towerModel.AddBehavior(slowZone);
             towerModel.AddBehavior(new LinkProjectileRadiusToTowerRangeModel(name: "AOE", projectileModel: towerModel.GetAttackModels()[1].weapons[0].projectile, baseTowerRange: 50f, projectileRadiusOffset: 0, displayRadius: 20f));
 
             towerModel.GetAttackModels()[0].range = 55f;
@@ -244,24 +259,31 @@ namespace Ice_Paragon
             towerModel.GetAttackModels()[1].range = 50f;
             towerModel.GetAttackModels()[1].weapons[0].Rate = 1f;
             towerModel.GetAttackModels()[1].weapons[0].GetBehavior<EjectEffectModel>().effectModel.scale = 8.5f;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.pierce = 80f;
+            towerModel.GetAttackModels()[1].weapons[0].projectile.pierce = 60f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.radius = 50f;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission.Cast<ArcEmissionModel>().count = 5;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission.Cast<ArcEmissionModel>().sliceSize = 72;
+            //towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission = new RandomArcEmissionModel(name: "Random", count: 1, offset: 0, angle: 360, randomAngle: 360, startOffset: 0, behaviors: null);
+            var emitOnDestroy = new EmitOnDestroyModel(
+                name: "DestroyEmit",
+                projectile: towerModel.GetAttackModels()[0].weapons[0].projectile,
+                emission: towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission,
+                tower: 0
+            );
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().AddBehavior(emitOnDestroy);
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().RemoveBehavior<EmitOnPopModel>();
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().layers = 1;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[0].layers = 999;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[0].Multiplier = 0.25f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<FreezeModel>()[0].layers = 999;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<FreezeModel>()[0].Lifespan = 7f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].layers = 999;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].Multiplier = 0.35f;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].mutationFilter = "";
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].Multiplier = 0.6f;
 
             towerModel.GetAttackModels()[1].RemoveBehavior<AttackFilterModel>();
             towerModel.GetAttackModels()[1].weapons[0].projectile.filters = towerModel.GetAttackModels()[1].weapons[0].projectile.filters.RemoveItemOfType<FilterModel, FilterFrozenBloonsModel>();
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters = towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters.RemoveItemOfType<FilterModel, FilterFrozenBloonsModel>();
 
             var abilityProjectile = towerModel.GetAttackModels()[1].weapons[0].projectile.Duplicate();
-            //abilityProjectile.AddBehavior(towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>());
+            abilityProjectile.AddBehavior(towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>());
             abilityProjectile.id = "SnowstormProjectile";
             abilityProjectile.pierce = 9999999f;
             abilityProjectile.radius = 9999999f;
@@ -270,8 +292,12 @@ namespace Ice_Paragon
             abilityProjectile.GetBehavior<FreezeModel>().Lifespan = 12f;
             abilityProjectile.GetBehavior<FreezeModel>().mutationId = "AbsoluteZero:Regular:Freeze";
             abilityProjectile.AddBehavior(towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModifierForTagModel>());
+            abilityProjectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnDestroyModel>().projectile.RemoveBehavior<CreateProjectileOnContactModel>();
+
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile = abilityProjectile;
             towerModel.GetAbility().Cooldown = 13f;
+
+            towerModel.GetAttackModels()[1].weapons[0].projectile.RemoveBehavior<AddBehaviorToBloonModel>();
         }
 
         public class Wind : ModDisplay

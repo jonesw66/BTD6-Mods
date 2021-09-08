@@ -24,6 +24,7 @@ using Assets.Scripts.Utils;
 using Assets.Scripts.Models.Effects;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
+using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 
 namespace Sniper_Paragon
 {
@@ -271,7 +272,6 @@ namespace Sniper_Paragon
 
             towerModel.GetWeapon().Rate = 0.05f;
             towerModel.GetWeapon().projectile.pierce = 10;
-            towerModel.GetWeapon().projectile.CapPierce(0);
 
             var maimModel = towerModel.GetWeapon().projectile.GetBehavior<SlowMaimMoabModel>();
             maimModel.moabDuration *= 1.2f;

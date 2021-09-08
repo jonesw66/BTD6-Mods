@@ -234,7 +234,6 @@ namespace Tack_Paragon
             wallOfFire.GetBehavior<DisplayModel>().scale = 0.1f;
             wallOfFire.GetBehavior<AgeModel>().lifespan = 0.1f;
             wallOfFire.RemoveBehavior<CreateEffectOnExhaustedModel>();
-            //wallOfFire.GetBehavior<CreateEffectOnExhaustedModel>().lifespan = 0.1f;
 
             var createProjectileModel = new CreateProjectileOnIntervalModel(
                 name: "CreateWOFModel",
