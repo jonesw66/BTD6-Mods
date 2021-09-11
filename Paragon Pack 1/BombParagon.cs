@@ -56,7 +56,7 @@ namespace Paragon_Pack_1
         {
             upgradeModel = new UpgradeModel(
                 name: "BombShooter Paragon",
-                cost: 500000,
+                cost: 850000,
                 xpCost: 0,
                 icon: new SpriteReference(guid: "db91fee2bc1f6a8428f99d5c384c828e"), // MOAB Eliminator
                 path: -1,
@@ -81,7 +81,7 @@ namespace Paragon_Pack_1
             towerModel.towerSet = "Primary";
             towerModel.radius = 6f;
             towerModel.radiusSquared = 36f;
-            towerModel.range = 80f;
+            towerModel.range = 70f;
 
             towerModel.ignoreBlockers = false;
             towerModel.isGlobalRange = false;
@@ -171,7 +171,7 @@ namespace Paragon_Pack_1
             towerModel.AddBehavior(new AttackModel(
                 name: "BombParagon_AttackModel",
                 weapons: new Il2CppReferenceArray<WeaponModel>(new WeaponModel[] { commonWeapon }),
-                range: 80f,
+                range: 70f,
                 behaviors: attackBehaviors,
                 targetProvider: null,
                 offsetX: 0,
@@ -250,16 +250,15 @@ namespace Paragon_Pack_1
         {
             var model050 = Game.instance.model.GetTowerFromId("BombShooter-050").Duplicate();
 
-            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon");
+            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon").Duplicate();
 
             towerModel.display = "31a16eecf9211a64b8dcdfad2ff7974e";
-            towerModel.GetBehavior<DisplayModel>().display = "31a16eecf9211a64b8dcdfad2ff7974e";
+            towerModel.GetBehavior<DisplayModel>().display = "31a16eecf9211a64b8dcdfad2ff7974e"; // MOAB Eliminator Tower Display
 
             towerModel.AddBehavior(boomerangParagon.GetBehavior<ParagonTowerModel>());
             towerModel.GetBehavior<ParagonTowerModel>().displayDegreePaths.ForEach(path => path.assetPath = "31a16eecf9211a64b8dcdfad2ff7974e");
             towerModel.AddBehavior(boomerangParagon.GetBehavior<CreateSoundOnAttachedModel>());
 
-            towerModel.GetAttackModel().GetBehavior<AttackFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.GetBehavior<ProjectileFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().Speed = 320f;
@@ -279,10 +278,11 @@ namespace Paragon_Pack_1
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().isOneShot = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().Lifespan = 1f;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].GetBehavior<AttackFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
-            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.2f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.3f;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission = Game.instance.model.GetTower("Adora").GetWeapon().emission.Duplicate();
-            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().count = 5;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().count = 7;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].emission.Cast<AdoraEmissionModel>().angleBetween = 110f;
+            towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<DamageModel>().damage = 1000f;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters[0].Cast<FilterInvisibleModel>().isActive = false;
             towerModel.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.RemoveBehavior<TravelStraitModel>();

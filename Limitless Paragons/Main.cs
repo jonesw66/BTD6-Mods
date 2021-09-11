@@ -23,7 +23,7 @@ using MelonLoader;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.Behaviors.ParagonTowerModel;
 
-[assembly: MelonInfo(typeof(Limitless_Paragons.Main), "Limitless Paragons", "0.1.0", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Limitless_Paragons.Main), "Limitless Paragons", "1.0.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Limitless_Paragons
 {

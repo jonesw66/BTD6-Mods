@@ -54,7 +54,7 @@ namespace Paragon_Pack_1
         {
             upgradeModel = new UpgradeModel(
                 name: $"{baseTower} Paragon",
-                cost: 500000,
+                cost: 750000,
                 xpCost: 0,
                 icon: new SpriteReference(guid: "d6f1cd3a3db072c429e90f279ffb9711"), // The Tack Zone
                 path: -1,
@@ -215,11 +215,11 @@ namespace Paragon_Pack_1
             towerModel.AddBehavior(boomerangParagon.GetBehavior<CreateSoundOnAttachedModel>());
 
             towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().count = 32;
-            towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().sliceSize = 22.5f;
+            towerModel.GetWeapon().emission.Cast<ArcEmissionModel>().sliceSize = 11.25f;
 
             towerModel.GetWeapon().projectile.display = "c184360c85b9d70499bb2fff7c77ecb2";
             towerModel.GetWeapon().projectile.scale = 2f;
-            towerModel.GetWeapon().projectile.pierce = 60f;
+            towerModel.GetWeapon().projectile.pierce = 30f;
             towerModel.GetWeapon().projectile.GetDamageModel().immuneBloonProperties = 0;
             towerModel.GetWeapon().projectile.GetBehavior<DisplayModel>().display = "c184360c85b9d70499bb2fff7c77ecb2"; // TackShooter-300 projectile
             towerModel.GetWeapon().projectile.GetBehavior<DisplayModel>().scale = 3f; 
@@ -249,15 +249,16 @@ namespace Paragon_Pack_1
             var meteor = model500.GetAttackModels()[1].weapons[0].projectile.Duplicate();
             meteor.display = "83e667b55bc3de24d9a9e5b0256438a7"; // Lord Phoenix Meteor Display
             meteor.GetBehavior<DisplayModel>().display = meteor.display;
-            meteor.pierce = 50;
+            meteor.pierce = 50f;
+            meteor.GetBehavior<DamageModel>().damage = 450f;
             meteor.filters = meteor.filters.RemoveItemOfType<FilterModel, FilterAllExceptTargetModel>();
             meteor.GetBehavior<ProjectileFilterModel>().filters = meteor.GetBehavior<ProjectileFilterModel>().filters.RemoveItemOfType<FilterModel, FilterAllExceptTargetModel>();
             meteor.RemoveBehavior<TrackTargetModel>();
             meteor.RemoveBehavior<CreateEffectOnExhaustFractionModel>();
-            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().Lifespan = 5f;
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().Lifespan = 4f;
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile = meteor;
-            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.18f;
-            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].GetBehavior<SpinModel>().rotationPerSecond = 480;
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.2f;
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].GetBehavior<SpinModel>().rotationPerSecond = 360;
         }
     }
 }

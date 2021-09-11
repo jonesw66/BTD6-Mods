@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: MelonInfo(typeof(Paragon_Pack_1.Main), "Paragon Pack 1", "0.1.0", "Weaboo Jones")]
+[assembly: MelonInfo(typeof(Paragon_Pack_1.Main), "Paragon Pack 1", "1.0.0", "Weaboo Jones")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace Paragon_Pack_1
 {
@@ -93,6 +93,8 @@ namespace Paragon_Pack_1
                             FileIOUtil.SaveObject($"Upgrades\\{pair.Key} Paragon.json", (UpgradeModel)pair.Value.GetField("upgradeModel").GetValue(null));
                             FileIOUtil.SaveObject($"Towers\\{pair.Key}-Paragon.json", (TowerModel)pair.Value.GetField("towerModel").GetValue(null));
                         }
+
+                        MelonLogger.Msg("Generated JSONs!");
                     });
                 });
 
@@ -124,7 +126,7 @@ namespace Paragon_Pack_1
                 Game.instance.GetLocalizationManager().textTable["GlueGunner Paragon Description"] = "Stop Bloons in their tracks and disintegrate them on the spot. Super adhesive glue solution slows even the mighty BAD!";
 
                 Game.instance.GetLocalizationManager().textTable["SniperMonkey Paragon"] = "S.E.A.L.";
-                Game.instance.GetLocalizationManager().textTable["SniperMonkey Paragon Description"] = "Fully-automatic shots cripple Bloons on contact. Elite snipers are capable of bouncing bullets between Bloons across the map!";
+                Game.instance.GetLocalizationManager().textTable["SniperMonkey Paragon Description"] = "Fully-automatic shots cripple Bloons on contact. S.E.A.L. is capable of bouncing bullets between Bloons across the map!";
             }
         }
 

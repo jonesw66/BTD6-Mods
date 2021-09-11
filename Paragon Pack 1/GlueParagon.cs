@@ -56,7 +56,7 @@ namespace Paragon_Pack_1
         {
             upgradeModel = new UpgradeModel(
                 name: $"{baseTower} Paragon",
-                cost: 500000,
+                cost: 800000,
                 xpCost: 0,
                 icon: new SpriteReference(guid: "745c6562c66a5764dad63eb97ef95c50"), // Super Glue
                 path: -1,

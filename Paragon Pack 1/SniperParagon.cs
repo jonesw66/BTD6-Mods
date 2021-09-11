@@ -55,7 +55,7 @@ namespace Paragon_Pack_1
         {
             upgradeModel = new UpgradeModel(
                 name: "SniperMonkey Paragon",
-                cost: 500000,
+                cost: 700000,
                 xpCost: 0,
                 icon: new SpriteReference(guid: "c9cb42be6c73344b0bd7757d4201de65"), // Elite Defender
                 path: -1,
@@ -259,7 +259,7 @@ namespace Paragon_Pack_1
         {
             var model005 = Game.instance.model.GetTowerFromId("SniperMonkey-005").Duplicate();
 
-            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon");
+            var boomerangParagon = Game.instance.model.GetTowerFromId("BoomerangMonkey-Paragon").Duplicate();
 
             towerModel.display = model005.display;
             towerModel.GetBehavior<DisplayModel>().display = model005.display;
@@ -272,7 +272,6 @@ namespace Paragon_Pack_1
             towerModel.GetBehaviors<AbilityModel>()[0].maxActivationsPerRound = 0;
             towerModel.GetBehaviors<AbilityModel>()[0].GetBehavior<ActivateAttackModel>().Lifespan = 2.0f;
             towerModel.GetBehaviors<AbilityModel>()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.4f;
-            towerModel.GetBehaviors<AbilityModel>()[0].GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].Rate = 0.4f;
 
             towerModel.GetWeapon().Rate = 0.05f;
             towerModel.GetWeapon().projectile.pierce = 10;
@@ -283,11 +282,11 @@ namespace Paragon_Pack_1
             maimModel.zomgDuration *= 1.2f;
             maimModel.ddtDuration *= 1.2f;
             maimModel.badDuration *= 1.2f;
-            maimModel.bloonPerHitDamageAddition = 7f;
+            maimModel.bloonPerHitDamageAddition = 10f;
 
             var emitModel = towerModel.GetWeapon().projectile.GetBehavior<EmitOnDamageModel>();
             emitModel.emission.Cast<ArcEmissionModel>().offsetStart = 11.25f;
-            emitModel.emission.Cast<ArcEmissionModel>().count = 7;
+            emitModel.emission.Cast<ArcEmissionModel>().count = 5;
             emitModel.projectile.pierce = 10f;
             emitModel.projectile.GetBehavior<DamageModel>().damage = 2f;
             emitModel.projectile.GetBehavior<DamageModel>().immuneBloonProperties = 0;

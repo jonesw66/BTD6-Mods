@@ -59,7 +59,7 @@ namespace Paragon_Pack_1
         {
             upgradeModel = new UpgradeModel(
                 name: $"{baseTower} Paragon",
-                cost: 500000,
+                cost: 550000,
                 xpCost: 0,
                 icon: new SpriteReference(guid: "d6b7340621dee7d4ab2a48c0cbd8b529"), // Icicle Impale
                 path: -1,
@@ -84,7 +84,7 @@ namespace Paragon_Pack_1
             towerModel.towerSet = "Primary";
             towerModel.radius = 6f;
             towerModel.radiusSquared = 36f;
-            towerModel.range = 55f;
+            towerModel.range = 65f;
 
             towerModel.ignoreBlockers = false;
             towerModel.isGlobalRange = false;
@@ -198,7 +198,7 @@ namespace Paragon_Pack_1
             towerModel.targetTypes = model005.targetTypes;
 
             var freezeWaterModel = model050.GetBehavior<FreezeNearbyWaterModel>();
-            freezeWaterModel.radius = 999f;
+            freezeWaterModel.radius = 100f;
             towerModel.AddBehavior(freezeWaterModel);
 
             towerModel.AddBehavior(model005.GetAttackModel());
@@ -223,17 +223,17 @@ namespace Paragon_Pack_1
 
             towerModel.GetBehavior<SlowBloonsZoneModel>().zoneRadius = 68f;
             towerModel.GetBehavior<SlowBloonsZoneModel>().radiusOffset = 0;
-            towerModel.GetBehavior<SlowBloonsZoneModel>().speedScale = 0.4f;
+            towerModel.GetBehavior<SlowBloonsZoneModel>().speedScale = 0.26f;
             towerModel.GetBehavior<SlowBloonsZoneModel>().bindRadiusToTowerRange = false;
             towerModel.GetBehavior<SlowBloonsZoneModel>().filters = new Il2CppReferenceArray<FilterModel>(0);
 
             var slowZone = new SlowBloonsZoneModel(
                 name: "Slow",
-                zoneRadius: 80f,
+                zoneRadius: 100f,
                 mutationId: "WindSlow",
                 isUnique: true,
                 filters: null,
-                speedScale: 0.8f,
+                speedScale: 0.6f,
                 speedChange: 0,
                 bindRadiusToTowerRange: false,
                 radiusOffset: 0,
@@ -243,61 +243,49 @@ namespace Paragon_Pack_1
             towerModel.AddBehavior(slowZone);
             towerModel.AddBehavior(new LinkProjectileRadiusToTowerRangeModel(name: "AOE", projectileModel: towerModel.GetAttackModels()[1].weapons[0].projectile, baseTowerRange: 50f, projectileRadiusOffset: 0, displayRadius: 20f));
 
-            towerModel.GetAttackModels()[0].range = 55f;
+            towerModel.GetAttackModels()[0].range = 65f;
             towerModel.GetAttackModels()[0].weapons[0].Rate = 0.5f;
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.pierce = 50f;
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.radius = 15f;
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModel>().damage = 5f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.pierce = 100f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.radius = 25f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModel>().damage = 10f;
             towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModel>().immuneBloonProperties = 0;
             towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<FreezeModel>().layers = 999;
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<FreezeModel>().Lifespan = 5f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<FreezeModel>().Lifespan = 4f;
             towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<FreezeModel>().damageModel = towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModel>();
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<CarryProjectileModel>().projectile.pierce = 5f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<CarryProjectileModel>().projectile.pierce = 10f;
             towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<CarryProjectileModel>().projectile.GetBehavior<DamageModel>().damage = 5f;
-            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModifierForTagModel>().damageAddative = 75f;
+            towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModifierForTagModel>().damageAddative = 55f;
 
-            towerModel.GetAttackModels()[1].range = 50f;
+            towerModel.GetAttackModels()[1].range = 60f;
             towerModel.GetAttackModels()[1].weapons[0].Rate = 1f;
             towerModel.GetAttackModels()[1].weapons[0].GetBehavior<EjectEffectModel>().effectModel.scale = 8.5f;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.pierce = 60f;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.radius = 50f;
-            //towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission = new RandomArcEmissionModel(name: "Random", count: 1, offset: 0, angle: 360, randomAngle: 360, startOffset: 0, behaviors: null);
-            var emitOnDestroy = new EmitOnDestroyModel(
-                name: "DestroyEmit",
-                projectile: towerModel.GetAttackModels()[0].weapons[0].projectile,
-                emission: towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnPopModel>().emission,
-                tower: 0
-            );
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().AddBehavior(emitOnDestroy);
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().RemoveBehavior<EmitOnPopModel>();
+            towerModel.GetAttackModels()[1].weapons[0].projectile.pierce = 150f;
+            towerModel.GetAttackModels()[1].weapons[0].projectile.radius = 60f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBehaviorToBloonModel>().layers = 1;
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<AddBonusDamagePerHitToBloonModel>().perHitDamageAddition = 40;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[0].layers = 999;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[0].Multiplier = 0.25f;
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[0].Multiplier = 0.6f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<FreezeModel>()[0].layers = 999;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<FreezeModel>()[0].Lifespan = 7f;
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].layers = 999;
-            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].Multiplier = 0.6f;
+            towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehaviors<SlowModel>()[1].Multiplier = 0.8f;
 
             towerModel.GetAttackModels()[1].RemoveBehavior<AttackFilterModel>();
             towerModel.GetAttackModels()[1].weapons[0].projectile.filters = towerModel.GetAttackModels()[1].weapons[0].projectile.filters.RemoveItemOfType<FilterModel, FilterFrozenBloonsModel>();
             towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters = towerModel.GetAttackModels()[1].weapons[0].projectile.GetBehavior<ProjectileFilterModel>().filters.RemoveItemOfType<FilterModel, FilterFrozenBloonsModel>();
 
             var abilityProjectile = towerModel.GetAttackModels()[1].weapons[0].projectile.Duplicate();
-            abilityProjectile.AddBehavior(towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>());
             abilityProjectile.id = "SnowstormProjectile";
             abilityProjectile.pierce = 9999999f;
             abilityProjectile.radius = 9999999f;
             abilityProjectile.filters = model050.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile.filters;
+            abilityProjectile.filters = abilityProjectile.filters.AddTo(new FilterFrozenBloonsModel("Filter"));
             abilityProjectile.GetBehavior<ProjectileFilterModel>().filters = abilityProjectile.filters;
             abilityProjectile.GetBehavior<FreezeModel>().Lifespan = 12f;
             abilityProjectile.GetBehavior<FreezeModel>().mutationId = "AbsoluteZero:Regular:Freeze";
-            abilityProjectile.AddBehavior(towerModel.GetAttackModels()[0].weapons[0].projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<DamageModifierForTagModel>());
-            abilityProjectile.GetBehavior<AddBehaviorToBloonModel>().GetBehavior<EmitOnDestroyModel>().projectile.RemoveBehavior<CreateProjectileOnContactModel>();
-
+            towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].GetBehavior<AttackFilterModel>().filters = towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].GetBehavior<AttackFilterModel>().filters.AddTo(new FilterFrozenBloonsModel("Filter"));
             towerModel.GetAbility().GetBehavior<ActivateAttackModel>().attacks[0].weapons[0].projectile = abilityProjectile;
             towerModel.GetAbility().Cooldown = 13f;
-
-            towerModel.GetAttackModels()[1].weapons[0].projectile.RemoveBehavior<AddBehaviorToBloonModel>();
         }
 
         public class Wind : ModDisplay
@@ -306,11 +294,10 @@ namespace Paragon_Pack_1
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.PrintInfo();
                 var renderers = node.GetComponentsInChildren<SpriteRenderer>();
                 foreach (var renderer in renderers)
                 {
-                    renderer.transform.localScale *= 3f;
+                    renderer.transform.localScale *= 4f;
                 }
             }
         }
