@@ -34,6 +34,8 @@ namespace Paragon_Pack_1
             { "SniperMonkey", typeof(SniperParagon) }
         };
 
+        static List<Tuple<TowerModel, UpgradeModel>> enabledParagons = new List<Tuple<TowerModel, UpgradeModel>>();
+
         static ModSettingBool bombParagon = new ModSettingBool(true)
         {
             displayName = "Bomb Paragon Enabled? (Requires restart)"
@@ -104,8 +106,13 @@ namespace Paragon_Pack_1
                     {
                         if (setting.displayName.Contains(pair.Key.Substring(0, 2)) && setting)
                         {
-                            Game.instance.model.AddUpgrade((UpgradeModel)pair.Value.GetField("upgradeModel").GetValue(null));
-                            Game.instance.model.AddTowerToGame((TowerModel)pair.Value.GetField("towerModel").GetValue(null));
+                            enabledParagons.Add(new Tuple<TowerModel, UpgradeModel>(
+                                (TowerModel)pair.Value.GetField("towerModel").GetValue(null),
+                                (UpgradeModel) pair.Value.GetField("upgradeModel").GetValue(null)
+                            ));
+
+                            Game.instance.model.AddUpgrade(enabledParagons.Last().Item2);
+                            Game.instance.model.AddTowerToGame(enabledParagons.Last().Item1);
 
                             MelonLogger.Msg(pair.Key + " Paragon Loaded!");
                             break;
@@ -136,11 +143,11 @@ namespace Paragon_Pack_1
             [HarmonyPostfix]
             internal static void Postfix(ProfileModel __instance)
             {
-                foreach (var pair in paragons)
+                foreach (var paragonPair in enabledParagons)
                 {
-                    __instance.unlockedTowers.Add($"{pair.Key}-Paragon");
+                    __instance.unlockedTowers.Add(paragonPair.Item1.name);
 
-                    __instance.acquiredUpgrades.Add($"{pair.Key} Paragon");
+                    __instance.acquiredUpgrades.Add(paragonPair.Item2.name);
                 }
             }
         }
@@ -152,9 +159,9 @@ namespace Paragon_Pack_1
             internal static bool Prefix(string towerId)
             {
                 bool isCustomParagon = false;
-                foreach (var pair in paragons)
+                foreach (var paragonPair in enabledParagons)
                 {
-                    if (towerId == (string) pair.Value.GetField("baseTower").GetValue(null))
+                    if (towerId == paragonPair.Item1.baseId)
                     {
                         isCustomParagon = true;
                     }
@@ -169,9 +176,9 @@ namespace Paragon_Pack_1
             [HarmonyPostfix]
             internal static void Postfix(GameModel result)
             {
-                foreach (var pair in paragons)
+                foreach (var paragonPair in enabledParagons)
                 {
-                    string baseTower = pair.Key;
+                    string baseTower = paragonPair.Item1.baseId;
 
                     for (int tier = 0; tier <= 2; tier++)
                     {
